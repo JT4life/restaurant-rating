@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% static "images" as baseurl %}
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.dropbtn {
+  background-color: #3b3f4f;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #3e8e41;
+}
+
+#myInput {
+  box-sizing: border-box;
+  background-image: url('searchicon.png');
+  background-position: 14px 12px;
+  background-repeat: no-repeat;
+  font-size: 16px;
+  padding: 14px 20px 12px 45px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+#myInput:focus {outline: 3px solid #ddd;}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f6f6f6;
+  min-width: 200px;
+  overflow: auto;
+  border: 1px solid #ddd;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+</style>
+</head>
+
+<body>
+<h1 align="center"> Welcome to our Restaurant Reviews! </h1>
+<h3 align="center">You can search for a specific restaurant using our search bar or choose from a list below.</h3>
+<br/>
+<div class="container" align="center">
+    <div class="dropdown">
+      <button onclick="myFunction()" class="dropbtn">Filter by</button>
+      <div id="myDropdown" class="dropdown-content">
+<!--          Creating the absolute url method for this part in models-->
+        <a href="{% url 'rating' %}">Rating</a>
+
+        <a href="#">Oldest</a>
+        <a href="#">Newest</a>
+      </div>
+    </div>
+</div>
+
+<script>
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("myDropdown");
+  a = div.getElementsByTagName("a");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+</script>
+<br/>
+<br/>
+<br/>
+    {% for restaurant in queryset %}
+<div class="container" align="center">
+							<div class="container">
+								<img src="{% if restaurant.image %}{{ restaurant.image.url }}{% else %}{% static 'images/no_image.png' %}{% endif %}" width="350" height="200">
+							</div>
+							<div class="container">
+								<div class="container"><a href="{{ restaurant.get_absolute_url }}"><p>Restaurant name: {{restaurant.name}} <br /><font color="#0400fc">Click here for more details</font></p>
+								</a></div>
+								<div class="container"><p>Address {{restaurant.address}}</p></div>
+								<div class="container"><p>Rating {{restaurant.rating}} / 5</p></div>
+							</div>
+</div>
+    {% endfor %}
+
+<div class="container" align="center">
+    <div class="pagination">
+        <span class="step-links">
+            {% if queryset.has_previous %}
+            <a href="?{{ page_request_var }}={{ queryset.previous_page_number }}">Previous Page</a> <font color ="#ded6d5">|</font>
+            {% endif %}
+
+            <span class="current">
+                <font color ="#ded6d5">Current Page {{ queryset.number }}</font>
+            </span>
+
+            {% if queryset.has_next %}
+            <font color ="#ded6d5">|</font> <a href="?{{ page_request_var }}={{ queryset.next_page_number }}">Next Page</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+</body>
+
+{% endblock %}

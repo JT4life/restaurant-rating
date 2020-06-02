@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% static "images" as baseurl %}
+	<!-- banner -->
+{% for post in post_list %}
+	<div class="inner_page_agile">
+		<h3 align="center">{{ post.name }}</h3>
+		<p></p>
+
+	</div>
+	<!--//banner -->
+	<!--/w3_short-->
+	<div class="services-breadcrumb_w3layouts">
+		<div class="inner_breadcrumb">
+		</div>
+	</div>
+	<!--//w3_short-->
+	<!-- /inner_content -->
+	<div class="inner_content_info_agileits">
+		<div class="container">
+			<div class="tittle_head_w3ls">
+				<h3 class="title" align="center">Restaurant Info </h3>
+				<div class="container" align="center">
+				<img src="{% if post.image %}{{ post.image.url }}{% else %}{% static 'images/no_image.png' %}{% endif %}" width="200" height="150">
+				</div>
+			</div>
+			<hr/>
+
+			<div class="container">
+				<!-- first Row-->
+				<div class="row">
+					<div class="col-sm-4">
+				<h3>Restaurant Name</h3>
+				          <p style="margin-left:25px;">{{ post.name}}</p>
+					</div>
+						<div class="col-sm-4">
+							<h3> Description</h3>
+				<p style="margin-left:25px;">{{ post.description }}</p>
+					</div>
+					<div class="col-sm-4">
+				<h3>Address</h3>
+				<p style="margin-left:25px;">{{ post.address}}</p>
+					</div>
+		    		</div>
+                 <!--second row-->
+				<hr/>
+					<div class="row">
+					<div class="col-sm-4">
+						<h3>Food Type </h3>
+				   <p style="margin-left:25px;">{{ post.food_type }}</p>
+					</div>
+						<div class="col-sm-4">
+							<h3>Rating </h3>
+				    <p style="margin-left:25px;">{{ post.rating }} /5</p>
+					</div>
+					<div class="col-sm-4">
+						<h3>Date Posted</h3>
+						              <p style="margin-left:30px;">{{ post.created }}</p>
+					</div>
+		    		</div>
+				<!--third row-->
+				<hr/>
+
+
+		</div>
+	</div>
+			{% endfor %}
+	<!-- //inner_content -->
+	{% endblock %}
